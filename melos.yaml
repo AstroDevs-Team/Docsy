@@ -1,0 +1,6 @@
+name: docsy
+packages:
+  - packages/*
+command:
+  bootstrap:
+    usePubspecOverrides: true

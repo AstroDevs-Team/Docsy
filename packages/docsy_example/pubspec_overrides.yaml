@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: docsy,docsy_toolbar
+dependency_overrides:
+  docsy:
+    path: ../docsy
+  docsy_toolbar:
+    path: ../docsy_toolbar

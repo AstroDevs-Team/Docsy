@@ -1,0 +1,8 @@
+include: package:flutter_lints/flutter.yaml
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_final_fields
+    - unnecessary_late
+    - avoid_redundant_argument_values
+    - directives_ordering
