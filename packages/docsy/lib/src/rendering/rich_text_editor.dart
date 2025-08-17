@@ -111,13 +111,12 @@ class _RichTextEditorState extends State<RichTextEditor> {
 
       case DividerNode _:
         return const DividerBlock();
-        
-      case CodeBlockNode n:
-      return CodeBlock(
-        key: key,
-        node: n,
-      );
 
+      case CodeBlockNode n:
+        return CodeBlock(
+          key: key,
+          node: n,
+        );
 
       case ListItemNode n:
         final prefix = n.ordered ? '• ' : '• ';
@@ -326,7 +325,7 @@ class _EditableHeadingState extends State<_EditableHeading> {
         style: style,
         cursorColor: Theme.of(context).colorScheme.primary,
         backgroundCursorColor: Colors.black12,
-        selectionColor: Theme.of(context).colorScheme.primary.withOpacity(0.25),
+        selectionColor: Theme.of(context).colorScheme.primary.withAlpha(64),
         keyboardType: TextInputType.text,
         selectionControls: materialTextSelectionControls,
       );
@@ -482,7 +481,7 @@ class _EditableQuoteState extends State<_EditableQuote> {
               cursorColor: Theme.of(context).colorScheme.primary,
               backgroundCursorColor: Colors.black12,
               selectionColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.25),
+                  Theme.of(context).colorScheme.primary.withAlpha(64),
               keyboardType: TextInputType.multiline,
               maxLines: null,
               selectionControls: materialTextSelectionControls,

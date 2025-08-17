@@ -125,3 +125,10 @@ app.*.symbols
 **/.flutter-plugins*
 **/.packages
 **/*.iml
+*.iml
+.pubignore
+.melos_tool/
+melos.yaml
+packages/**/build/
+packages/**/.dart_tool/
+packages/**/.idea/

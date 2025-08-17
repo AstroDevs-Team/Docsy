@@ -3,6 +3,7 @@ description: HTML import/export adapter for Docsy.
 version: 0.1.0
 repository: https://github.com/AstroDevs-Team/Docsy
 issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
+homepage: https://github.com/AstroDevs-Team/Docsy#readme
 
 environment:
   sdk: '>=3.5.0 <4.0.0'

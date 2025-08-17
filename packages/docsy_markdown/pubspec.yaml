@@ -3,6 +3,7 @@ description: Markdown import/export adapter for Docsy.
 version: 0.1.0
 repository: https://github.com/AstroDevs-Team/Docsy
 issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
+homepage: https://github.com/AstroDevs-Team/Docsy#readme
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
@@ -11,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  docsy: ^0.1.0    # ← hosted version, not path
+  docsy: ^0.1.0
   markdown: ^7.2.2
 
 dev_dependencies:
