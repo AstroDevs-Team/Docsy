@@ -1,0 +1,58 @@
+name: Build & Deploy Docsy Example to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Enable web
+        run: flutter config --enable-web
+
+
+      - name: Pub get (example)
+        working-directory: packages/docsy_example
+        run: flutter pub get
+
+      - name: Build web (example)
+        working-directory: packages/docsy_example
+        run: |
+          flutter build web --release --base-href "/Docsy/"
+          # SPA 404 fallback (optional but recommended)
+          cp build/web/index.html build/web/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: packages/docsy_example/build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
