@@ -127,7 +127,6 @@ app.*.symbols
 **/*.iml
 *.iml
 .melos_tool/
-melos.yaml
 packages/**/build/
 packages/**/.dart_tool/
 packages/**/.idea/
