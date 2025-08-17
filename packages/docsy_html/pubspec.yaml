@@ -1,17 +1,17 @@
 name: docsy_html
 description: HTML import/export adapter for Docsy.
-version: 0.0.1
-publish_to: 'none'
+version: 0.1.0
+repository: https://github.com/AstroDevs-Team/Docsy
+issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
-  flutter: '>=3.24.0'
+  flutter: '>=3.22.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  docsy:
-    path: ../docsy
+  docsy: ^0.1.0
   html: ^0.15.4
 
 dev_dependencies:

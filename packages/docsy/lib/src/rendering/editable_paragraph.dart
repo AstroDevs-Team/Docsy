@@ -128,8 +128,9 @@ class _EditableParagraphState extends State<EditableParagraph> {
       },
     );
 
-    // Mirror selection to controller (for toolbar) — no doc writes here.
     _tec.addListener(_syncSelectionOnly);
+
+    widget.controller.addListener(_onControllerChanged);
   }
 
   @override
@@ -154,6 +155,7 @@ class _EditableParagraphState extends State<EditableParagraph> {
 
   @override
   void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
     _tec.removeListener(_syncSelectionOnly);
     _tec.dispose();
     _focus.dispose();
@@ -169,6 +171,33 @@ class _EditableParagraphState extends State<EditableParagraph> {
         sel.baseOffset,
         sel.extentOffset,
       );
+    }
+  }
+
+  void _onControllerChanged() {
+    final sel = widget.controller.selection;
+    if (sel == null) return;
+
+    // only care if this block is targeted
+    if (sel.base.block == widget.index && sel.extent.block == widget.index) {
+      final offset = sel.extent.offset.clamp(0, _tec.text.length);
+      final newSel = TextSelection.collapsed(offset: offset);
+
+      if (_tec.selection != newSel) {
+        _tec.selection = newSel;
+        _focus.requestFocus();
+
+        // (Optional) scroll into view if needed
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Scrollable.ensureVisible(
+              context,
+              alignment: 0.95,
+              duration: const Duration(milliseconds: 150),
+            );
+          }
+        });
+      }
     }
   }
 

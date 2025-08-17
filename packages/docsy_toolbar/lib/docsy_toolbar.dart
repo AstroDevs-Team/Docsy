@@ -1,8 +1,7 @@
 library docsy_toolbar;
 
-import 'package:flutter/material.dart';
 import 'package:docsy/docsy.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/material.dart';
 
 class DocsyToolbar extends StatelessWidget {
   final EditorController controller;
@@ -20,41 +19,6 @@ class DocsyToolbar extends StatelessWidget {
         : sel.base.offset;
     if (start == end) return; // collapsed caret
     run(sel.base.block, start, end);
-  }
-
-  /// Returns the href (if any) at the current caret/selection start.
-  String? _hrefAtSelection() {
-    final sel = controller.selection;
-    if (sel == null) return null;
-    if (sel.base.block != sel.extent.block) return null;
-
-    final blockIndex = sel.base.block;
-    final offset = sel.base.offset;
-    final block = controller.document.blocks[blockIndex];
-
-    List<TextSpanNode>? spans;
-    if (block is ParagraphNode) {
-      spans = block.inlines;
-    } else if (block is HeadingNode) {
-      spans = block.inlines;
-    } else if (block is QuoteNode) {
-      spans = block.inlines;
-    } else if (block is ListItemNode) {
-      spans = block.inlines;
-    } else {
-      return null;
-    }
-
-    var cursor = 0;
-    for (final s in spans) {
-      final start = cursor;
-      final end = cursor + s.text.length;
-      cursor = end;
-      if (offset >= start && offset <= end) {
-        return s.marks.link;
-      }
-    }
-    return null;
   }
 
   Future<void> _addLink(BuildContext context) async {
@@ -89,6 +53,83 @@ class DocsyToolbar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _insertCodeBlock(BuildContext context) async {
+    final raw = await _promptForCode(context);
+    if (raw == null) return;
+
+    final parsed = _parseFencedCode(raw);
+    final lang = parsed.$1; // language ('' if none)
+    final code = parsed.$2; // code content
+
+    if (code.trim().isEmpty) return;
+
+    controller.transact((tx) {
+      tx.add((doc) {
+        final blocks = [...doc.blocks];
+        blocks.add(
+          CodeBlockNode(
+            language: lang.isEmpty ? null : lang,
+          ),
+        );
+        // Represent code as a single span; marks.code = true for styling
+        final idx = blocks.length - 1;
+        final cb = blocks[idx] as CodeBlockNode;
+        blocks[idx] = cb.copyWith(
+          inlines: [TextSpanNode(code, marks: const TextMarks(code: true))],
+        );
+        return doc.copyWith(blocks: blocks);
+      });
+    });
+  }
+
+  Future<String?> _promptForCode(BuildContext context) async {
+    final tec = TextEditingController(
+      text: '```dart\nprint("hello world");\n```',
+    );
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Insert code block'),
+        content: SizedBox(
+          width: 600,
+          child: TextField(
+            controller: tec,
+            autofocus: true,
+            maxLines: 10,
+            decoration: const InputDecoration(
+              hintText: 'Paste code (supports ```lang ... ``` fenced blocks)',
+            ),
+            keyboardType: TextInputType.multiline,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(tec.text),
+            child: const Text('Insert'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  (String, String) _parseFencedCode(String raw) {
+    final text = raw.trim();
+    final re = RegExp(r'```([\w+\-]*)\n([\s\S]*?)```', multiLine: true);
+    final m = re.firstMatch(text);
+    if (m != null) {
+      final lang = (m.group(1) ?? '').trim();
+      final code = (m.group(2) ?? '').trimRight();
+      return (lang, code);
+    }
+    // Fallback: whole text is code, no language
+    return ('', text);
+    // (You could also try to auto-detect language later.)
   }
 
   @override
@@ -147,6 +188,12 @@ class DocsyToolbar extends StatelessWidget {
           icon: const Icon(Icons.horizontal_rule),
           onPressed: controller.insertDivider,
         ),
+        IconButton(
+          tooltip: 'Insert Code Block',
+          icon: const Icon(Icons.code),
+          onPressed: () => _insertCodeBlock(context),
+        ),
+
         IconButton(
           tooltip: 'Undo',
           icon: const Icon(Icons.undo),

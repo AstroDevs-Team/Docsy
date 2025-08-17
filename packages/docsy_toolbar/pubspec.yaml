@@ -1,18 +1,17 @@
 name: docsy_toolbar
 description: Reference toolbar & UI components for Docsy.
-version: 0.0.1
-publish_to: 'none'
+version: 0.1.0
+repository: https://github.com/AstroDevs-Team/Docsy
+issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
-  flutter: '>=3.24.0'
+  flutter: '>=3.22.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  docsy:
-    path: ../docsy
-  url_launcher: ^6.3.0
+  docsy: ^0.1.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0

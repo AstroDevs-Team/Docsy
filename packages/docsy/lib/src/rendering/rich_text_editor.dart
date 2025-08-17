@@ -111,6 +111,13 @@ class _RichTextEditorState extends State<RichTextEditor> {
 
       case DividerNode _:
         return const DividerBlock();
+        
+      case CodeBlockNode n:
+      return CodeBlock(
+        key: key,
+        node: n,
+      );
+
 
       case ListItemNode n:
         final prefix = n.ordered ? '• ' : '• ';

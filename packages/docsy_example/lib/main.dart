@@ -59,8 +59,10 @@ class _DocsyDemoState extends State<DocsyDemo> {
               icon: const Icon(Icons.horizontal_rule),
               onPressed: controller.insertDivider,
             ),
-            IconButton(icon: const Icon(Icons.undo), onPressed: controller.undo),
-            IconButton(icon: const Icon(Icons.redo), onPressed: controller.redo),
+            IconButton(
+                icon: const Icon(Icons.undo), onPressed: controller.undo),
+            IconButton(
+                icon: const Icon(Icons.redo), onPressed: controller.redo),
           ],
         ),
         body: Column(
@@ -80,7 +82,31 @@ class _DocsyDemoState extends State<DocsyDemo> {
         ),
         floatingActionButton: _isEditing
             ? FloatingActionButton(
-                onPressed: controller.insertParagraphAtEnd,
+                onPressed: () {
+
+                  controller.insertParagraphAtEnd();
+
+
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    final blocks = controller.document.blocks;
+                    if (blocks.isEmpty) return;
+
+                    final lastIndex = blocks.length - 1;
+                    final lastBlock = blocks[lastIndex];
+
+                    if (lastBlock is ParagraphNode) {
+
+                      final textLen = lastBlock.inlines.isNotEmpty
+                          ? lastBlock.inlines.first.text.length
+                          : 0;
+
+                      controller.selection = DocSelection(
+                        DocPosition(lastIndex, /*inline*/ 0, textLen),
+                        DocPosition(lastIndex, /*inline*/ 0, textLen),
+                      );
+                    }
+                  });
+                },
                 child: const Icon(Icons.add),
               )
             : null,

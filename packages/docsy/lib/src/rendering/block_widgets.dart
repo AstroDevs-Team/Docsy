@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/a11y-dark.dart';
+import 'package:flutter_highlight/themes/atelier-seaside-dark.dart';
+import 'package:flutter_highlight/themes/atom-one-dark.dart';
+import 'package:flutter_highlight/themes/github.dart';
+import 'package:flutter_highlight/themes/gradient-dark.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../document/nodes.dart';
@@ -126,4 +133,182 @@ class DividerBlock extends StatelessWidget {
   const DividerBlock({super.key});
   @override
   Widget build(BuildContext context) => const Divider(height: 24);
+}
+
+class CodeBlock extends StatefulWidget {
+  final CodeBlockNode node;
+  const CodeBlock({super.key, required this.node});
+
+  @override
+  State<CodeBlock> createState() => _CodeBlockState();
+}
+
+class _CodeBlockState extends State<CodeBlock> {
+  bool _showingCopiedMessage = false;
+  void _triggerCopiedMessage() {
+    setState(() => _showingCopiedMessage = true);
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      if (mounted) setState(() => _showingCopiedMessage = false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final code = widget.node.inlines.map((s) => s.text).join();
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 200,
+          maxWidth: 600,
+        ),
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+
+          decoration: BoxDecoration(
+            color: Colors.grey.shade900,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 2,
+                left: 15,
+                child: Text(
+                  widget.node.language?.toUpperCase() ?? '',
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.all(10),
+                child: HighlightView(
+                  code,
+                  language: widget.node.language ?? 'unknown',
+                  theme: a11yDarkTheme,
+                  padding: const EdgeInsets.all(8),
+                  textStyle:
+                      const TextStyle(fontFamily: 'FiraMono', fontSize: 14),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: _showingCopiedMessage ? 1 : 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomLeft: Radius.circular(8),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.lightBlueAccent.withAlpha(100),
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Copied To Clipboard",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 100),
+                      opacity: !_showingCopiedMessage ? 1 : 0,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomLeft: Radius.circular(8),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.lightBlueAccent.withAlpha(100),
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            padding: const EdgeInsets.all(1),
+                            icon: const Icon(
+                              Icons.copy,
+                              color: Colors.white70,
+                              size: 18,
+                            ),
+                            splashRadius: 20,
+                            tooltip: "Copy",
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(text: code));
+                              _triggerCopiedMessage();
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          //   IntrinsicWidth(
+          //     child: Column(
+          //       children: [
+          //         HighlightView(
+          //           code,
+          //           padding: const EdgeInsets.all(8),
+          //           language: widget.node.language ?? 'plaintext',
+          //           theme: atomOneDarkTheme,
+          //           textStyle: const TextStyle(
+          //             fontFamily: 'monospace',
+          //             fontSize: 14,
+          //           ),
+          //         ),
+          //         Align(
+          //           alignment: Alignment.centerRight,
+          //           child: IconButton(
+          //             tooltip: 'Copy',
+          //             icon:
+          //                 const Icon(Icons.copy, size: 16, color: Colors.white70),
+          //             onPressed: () {
+          //               Clipboard.setData(ClipboardData(text: code));
+          //               ScaffoldMessenger.of(context).showSnackBar(
+          //                 const SnackBar(content: Text('Code copied')),
+          //               );
+          //             },
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+        ),
+      ),
+    );
+  }
 }

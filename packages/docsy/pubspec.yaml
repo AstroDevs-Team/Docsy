@@ -1,11 +1,13 @@
 name: docsy
-description: Core Flutter WYSIWYG editor engine and widgets for Docsy.
-version: 0.0.1
-publish_to: 'none'
+description: Flutter WYSIWYG editor engine and widgets.
+version: 0.1.0
+repository: https://github.com/AstroDevs-Team/Docsy
+issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
+homepage: https://github.com/AstroDevs-Team/Docsy#readme
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
-  flutter: '>=3.24.0'
+  flutter: '>=3.22.0'
 
 dependencies:
   flutter:
@@ -15,8 +17,21 @@ dependencies:
   meta: ^1.12.0
   uuid: ^4.4.0
   url_launcher: ^6.3.0
+  flutter_highlight: ^0.7.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+
+topics:
+  - editor
+  - wysiwyg
+  - rich-text
+
+
+screenshots:
+  - description: "Docsy editor mode"
+    path: screenshots/editing.png
+  - description: "Docsy readonly mode"
+    path: screenshots/readonly.png
