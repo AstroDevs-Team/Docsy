@@ -5,6 +5,8 @@ A simple, customizable toolbar for the
 It provides buttons for common text formatting actions (bold, italic,
 underline, links, headings, dividers, undo/redo, and more).
 
+[![Try it Live](https://img.shields.io/badge/Try%20it%20Live-Docsy-blue?style=for-the-badge&logo=flutter)](https://astrodevs-team.github.io/Docsy/)
+
 ------------------------------------------------------------------------
 
 ## ✨ Features

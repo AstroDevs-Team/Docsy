@@ -3,6 +3,9 @@
 The **Docsy HTML** package provides export functionality for the [Docsy editor](https://pub.dev/packages/docsy).  
 It allows you to serialize Docsy documents into **HTML** for rendering in browsers or embedding into websites.
 
+[![Try it Live](https://img.shields.io/badge/Try%20it%20Live-Docsy-blue?style=for-the-badge&logo=flutter)](https://astrodevs-team.github.io/Docsy/)
+
+
 ## ✨ Features
 
 - Export any Docsy `Document` into valid HTML5.

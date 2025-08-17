@@ -1,6 +1,6 @@
 name: docsy
-description: Flutter WYSIWYG editor engine and widgets.
-version: 0.1.0
+description: A modular WYSIWYG rich-text editor engine for Flutter. Provides document model, editing commands, rendering, and import/export for JSON, Markdown, and HTML.
+version: 0.1.1
 repository: https://github.com/AstroDevs-Team/Docsy
 issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
 homepage: https://github.com/AstroDevs-Team/Docsy#readme

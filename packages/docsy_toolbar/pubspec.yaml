@@ -1,6 +1,6 @@
 name: docsy_toolbar
-description: Reference toolbar & UI components for Docsy.
-version: 0.1.0
+description: A customizable toolbar for the Docsy Flutter editor. Includes ready-made buttons (bold, italic, headings, lists, links, images) with easy integration.
+version: 0.1.1
 repository: https://github.com/AstroDevs-Team/Docsy
 issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
 homepage: https://github.com/AstroDevs-Team/Docsy#readme
@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  docsy: ^0.1.0
+  docsy: ^0.1.1
 
 dev_dependencies:
   flutter_lints: ^4.0.0

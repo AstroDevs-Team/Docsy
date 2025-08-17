@@ -9,6 +9,8 @@ A modern **WYSIWYG Rich Text Editor** for Flutter.
 Write, edit, and render rich text with the same look as the final output —  
 **What You See Is What You Get (WYSIWYG).**
 
+[![Try it Live](https://img.shields.io/badge/Try%20it%20Live-Docsy-blue?style=for-the-badge&logo=flutter)](https://astrodevs-team.github.io/Docsy/)
+
 ---
 
 ## 🚀 Features

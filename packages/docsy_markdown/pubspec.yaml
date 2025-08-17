@@ -1,6 +1,6 @@
 name: docsy_markdown
-description: Markdown import/export adapter for Docsy.
-version: 0.1.0
+description: Markdown import and export support for Docsy, the modular Flutter WYSIWYG editor. Convert documents seamlessly between Docsy and Markdown.
+version: 0.1.1
 repository: https://github.com/AstroDevs-Team/Docsy
 issue_tracker: https://github.com/AstroDevs-Team/Docsy/issues
 homepage: https://github.com/AstroDevs-Team/Docsy#readme
@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  docsy: ^0.1.0
+  docsy: ^0.1.1
   markdown: ^7.2.2
 
 dev_dependencies:
